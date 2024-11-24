@@ -1,35 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UAS Machine Learning</title>
-</head>
-<body>
-    <div class="container">
-        <div class="warp">
-            <form action="/" method="get">
-                <if finalData = 1>
-                    <span>
-                        POSISTIF DIABETES
-                    </span>
-                </if>
-                <else>
-                    <span>
-                        NEGATIF DIABETES
-                    </span>
-                </else>
+{% extends "base.html" %}
 
-                <div>
-                    <button>
-                        <span>
-                            Selesai
-                        </span>
-                    </button>
-                </div>
-            </form>
-        </div>
+{% block title %}Hasil Prediksi{% endblock %}
 
+{% block content %}
+<div class="card mt-5">
+    <div class="card-header">
+        <h2>Hasil Prediksi Diabetes</h2>
     </div>
-</body>
-</html>
+    <div class="card-body">
+        <h3 class="text-center text-{{ 'danger' if finalData[0] == 1 else 'success' }}">
+            {% if finalData[0] == 1 %}
+                POSITIF DIABETES
+            {% else %}
+                NEGATIF DIABETES
+            {% endif %}
+        </h3>
+        <div class="text-center mt-4">
+            <a href="/" class="btn btn-secondary">Kembali</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

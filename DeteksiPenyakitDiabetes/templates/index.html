@@ -1,85 +1,55 @@
 {% extends "base.html" %}
-{% block head %}
-    <title>Little Arv Pranudyantoro</title>
-{% endblock %}
 
-{% block body %}
-<div class="container-contact100">
-    <div class="wrap-contact100">
-        <form class="contact100-form validate-form" action="/" method="POST">
-            <span class="contact100-form-title">
-                Pendeteksi Diabetes!
-            </span>
+{% block title %}Form Deteksi Diabetes{% endblock %}
 
-            <!-- Input Banyak Melahirkan -->
-            <div class="wrap-input100 validate-input">
-                <span class="label-input100">Banyak Melahirkan</span>
-                <input class="input100" type="text" placeholder="Masukkan jumlah melahirkan" name="melahirkan">
-                <span class="focus-input100"></span>
-            </div>
-
-            <!-- Input Kadar Glukosa -->
-            <div class="wrap-input100 validate-input">
-                <span class="label-input100">Kadar Glukosa</span>
-                <input class="input100" type="text" placeholder="Masukkan kadar glukosa" name="glukosa">
-                <span class="focus-input100"></span>
-            </div>
-
-            <!-- Input Tekanan Darah -->
-            <div class="wrap-input100 validate-input">
-                <span class="label-input100">Tekanan Darah</span>
-                <input class="input100" type="text" placeholder="Masukkan tekanan darah" name="darah">
-                <span class="focus-input100"></span>
-            </div>
-
-            <!-- Input Tebal Kulit -->
-            <div class="wrap-input100 validate-input">
-                <span class="label-input100">Tebal Kulit</span>
-                <input class="input100" type="text" placeholder="Masukkan ketebalan kulit" name="kulit">
-                <span class="focus-input100"></span>
-            </div>
-
-            <!-- Input Kadar Insulin -->
-            <div class="wrap-input100 validate-input">
-                <span class="label-input100">Kadar Insulin</span>
-                <input class="input100" type="text" placeholder="Masukkan kadar insulin" name="insulin">
-                <span class="focus-input100"></span>
-            </div>
-
-            <!-- Input BMI -->
-            <div class="wrap-input100 validate-input">
-                <span class="label-input100">BMI</span>
-                <input class="input100" type="text" placeholder="Masukkan BMI" name="bmi" required>
-                <span class="focus-input100"></span>
-            </div>
-
-            <!-- Input Riwayat Diabetes -->
-            <div class="wrap-input100 validate-input">
-                <span class="label-input100">Riwayat Diabetes</span>
-                <input class="input100" type="text" placeholder="Masukkan derajat diabetes keturunan" name="riwayat_diabetes">
-                <span class="focus-input100"></span>
-            </div>
-
-            <!-- Input Umur -->
-            <div class="wrap-input100 validate-input">
-                <span class="label-input100">Umur</span>
-                <input class="input100" type="text" placeholder="Masukkan umur" name="umur" required>
-                <span class="focus-input100"></span>
-            </div>
-
-            <!-- Tombol Submit -->
-            <div class="container-contact100-form-btn">
-                <div class="wrap-contact100-form-btn">
-                    <div class="contact100-form-bgbtn"></div>
-                    <button class="contact100-form-btn">
-                        <span>
-                            Kirim Data
-                            <i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
-                        </span>
-                    </button>
-                </div>
-            </div>
-        </form>
+{% block content %}
+<h1 class="my-4">Deteksi Diabetes</h1>
+<form method="POST">
+   
+    <div class="mb-3">
+        <label for="melahirkan" class="form-label">Melahirkan</label>
+        <input type="number" class="form-control" id="melahirkan" name="melahirkan" required>
     </div>
+    
+    <div class="mb-3">
+        <label for="glukosa" class="form-label">Kadar Glukosa</label>
+        <input type="number" class="form-control" id="glukosa" name="glukosa" required>
+    </div>
+    <div class="mb-3">
+        <label for="darah" class="form-label">Tekanan Darah</label>
+        <input type="number" class="form-control" id="darah" name="darah" required step="any">
+    </div>
+    <div class="mb-3">
+        <label for="kulit" class="form-label">Kulit</label>
+        <input type="number" class="form-control" id="kulit" name="kulit"  required step="any">
+    </div>
+    <div class="mb-3">
+        <label for="insulin" class="form-label">Insulin</label>
+        <input type="number" class="form-control" id="insulin" name="insulin" required step="any">
+    </div>
+    <div class="mb-3">
+        <label for="bmi" class="form-label">BMI</label>
+        <input type="number" class="form-control" id="bmi" name="bmi"  required step="any">
+    </div>
+    <div class="mb-3">
+        <label for="riwayat_diabetes" class="form-label">Riwayat Diabetes</label>
+        <input type="number" class="form-control" id="riwayat_diabetes" name="riwayat_diabetes"  required step="any">
+    </div>
+    <div class="mb-3">
+        <label for="umur" class="form-label">Umur</label>
+        <input type="number" class="form-control" id="umur" name="umur"  required step="any">
+    </div>
+    <button type="submit" class="btn btn-primary">Kirim</button>
+</form> 
+
+<!-- Menampilkan hasil prediksi -->
+  {% if result %}
+<div class="alert alert-info mt-4">
+    Hasil Prediksi: <strong>{{ result }}</strong>
 </div>
-{% endblock %}
+{% elif error %}
+<div class="alert alert-danger mt-4">
+    {{ error }}
+</div>
+{% endif %}
+{% endblock %} 

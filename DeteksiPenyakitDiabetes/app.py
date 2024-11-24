@@ -1,38 +1,128 @@
-from flask import Flask, render_template, request, redirect
+import sklearn
+print(sklearn.__version__)
+
+from flask import Flask, render_template, request
 import pickle
 import numpy as np
+import os
 
 app = Flask(__name__)
+
+# Tentukan path absolut ke file model
+MODEL_PATH = os.path.join(os.path.dirname(__file__), 'models','knn_pickle.pkl')
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
     if request.method == 'POST':
-        # Load model
-        with open('knn_pickle', 'rb') as r:
-            model = pickle.load(r)
+        try:
+            # Cek apakah file model ada
+            if not os.path.exists(MODEL_PATH):
+                return render_template('index.html', error="File model 'knn_pickle.pkl' tidak ditemukan. Pastikan file berada di lokasi yang benar.")
 
-        # Ambil data dari form
-        melahirkan = float(request.form['melahirkan'])
-        glukosa = float(request.form['glukosa'])
-        darah = float(request.form['darah'])
-        kulit = float(request.form['kulit'])
-        insulin = float(request.form['insulin'])
-        bmi = float(request.form['bmi'])
-        riwayat = float(request.form['riwayat'])
-        umur = float(request.form['umur'])
+            # Load model
+            with open(MODEL_PATH, 'rb') as r:
+                model = pickle.load(r)
+        except Exception as e:
+            return render_template('index.html', error=f"Terjadi kesalahan saat memuat model: {e}")
 
-        # Buat array untuk prediksi
-        datas = np.array((melahirkan, glukosa, darah, kulit, insulin, bmi, riwayat, umur))
-        datas = np.reshape(datas, (1, -1))
+        try:
+            # Ambil data dari form dan pastikan validitas input
+            melahirkan = float(request.form['melahirkan'])
+            glukosa = float(request.form['glukosa'])
+            darah = float(request.form['darah'])
+            kulit = float(request.form['kulit'])
+            insulin = float(request.form['insulin'])
+            bmi = float(request.form['bmi'])
+            riwayat = float(request.form['riwayat_diabetes'])  # Adjusted to match the form field name
+            umur = float(request.form['umur'])
 
-        # Prediksi menggunakan model
-        isDiabetes = model.predict(datas)
+            # Buat array untuk prediksi
+            datas = np.array([melahirkan, glukosa, darah, kulit, insulin, bmi, riwayat, umur])
+            datas = datas.reshape(1, -1)
 
-        # Tampilkan hasil di template
-        return render_template('hasil.html', finalData=isDiabetes)
+            # Prediksi menggunakan model
+            isDiabetes = model.predict(datas)
+
+            # Format hasil prediksi untuk ditampilkan
+            result = "Diabetes" if isDiabetes[0] == 1 else "Tidak Diabetes"
+            return render_template('index.html', result=result)  # Pass the result to the template
+        except ValueError:
+            return render_template('index.html', error="Input tidak valid. Pastikan semua data yang dimasukkan adalah angka.")
+        except Exception as e:
+            return render_template('index.html', error=f"Terjadi kesalahan saat melakukan prediksi: {e}")
     else:
         # Tampilkan form input
         return render_template('index.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+
+
+
+# import sklearn
+# print(sklearn.__version__)
+
+# from flask import Flask, render_template, request
+# import pickle
+# import numpy as np
+# import os
+
+# app = Flask(__name__)
+
+# # Tentukan path absolut ke file model
+# MODEL_PATH = os.path.join(os.path.dirname(__file__), 'models','knn_pickle.pkl')
+
+# # Tentukan path absolut ke file model
+# MODEL_PATH = os.path.join(os.path.dirname(__file__), 'models', 'knn_pickle.pkl')
+
+# @app.route('/', methods=['POST', 'GET'])
+# def index():
+#     result = None
+#     error = None
+
+#     if request.method == 'POST':
+#         try:
+#             # Cek apakah file model ada
+#             if not os.path.exists(MODEL_PATH):
+#                 error = "File model 'knn_pickle.pkl' tidak ditemukan. Pastikan file berada di lokasi yang benar."
+#                 return render_template('index.html', result=result, error=error)
+
+#             # Load model
+#             with open(MODEL_PATH, 'rb') as r:
+#                 model = pickle.load(r)
+#         except Exception as e:
+#             error = f"Terjadi kesalahan saat memuat model: {e}"
+#             return render_template('index.html', result=result, error=error)
+
+#         try:
+#             # Ambil data dari form
+#             melahirkan = float(request.form['melahirkan'])
+#             glukosa = float(request.form['glukosa'])
+#             darah = float(request.form['darah'])
+#             kulit = float(request.form['kulit'])
+#             insulin = float(request.form['insulin'])
+#             bmi = float(request.form['bmi'])
+#             riwayat = float(request.form['riwayat_diabetes'])  # Perbaiki nama field jika perlu
+#             umur = float(request.form['umur'])
+
+#             # Buat array untuk prediksi
+#             datas = np.array([melahirkan, glukosa, darah, kulit, insulin, bmi, riwayat, umur])
+#             datas = datas.reshape(1, -1)
+
+#             # Prediksi menggunakan model
+#             isDiabetes = model.predict(datas)
+
+#             # Tentukan hasil prediksi
+#             result = "Diabetes" if isDiabetes[0] == 1 else "Tidak Diabetes"
+            
+#         except ValueError:
+#             error = "Input tidak valid. Pastikan semua data yang dimasukkan adalah angka."
+        
+#         return render_template('index.html', result=result, error=error)
+#     else:
+#         return render_template('index.html', result=result, error=error)
+
+# if __name__ == "__main__":
+#     app.run(debug=True)
