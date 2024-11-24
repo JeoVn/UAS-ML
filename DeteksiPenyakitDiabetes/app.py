@@ -111,7 +111,7 @@ def index():
             isDiabetes = model.predict(datas_scaled)
 
             # Format hasil prediksi untuk ditampilkan
-            result = "Diabetes" if isDiabetes[0] == 1 else "Tidak Diabetes"
+            result = "POSITIF DIABETES" if isDiabetes[0] == 1 else "NEGATIF DIABETES"
             return render_template('index.html', result=result)  # Pass the result to the template
         except ValueError:
             return render_template('index.html', error="Input tidak valid. Pastikan semua data yang dimasukkan adalah angka.")
