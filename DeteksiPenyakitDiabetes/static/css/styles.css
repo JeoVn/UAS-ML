@@ -1,0 +1,40 @@
+/* styles.css */
+
+/* Tombol dengan efek gradien */
+.btn-gradient-primary {
+    background: linear-gradient(90deg, #000000, #0056b3);
+    color: white;
+    border: none;
+    transition: background 0.3s ease;
+}
+
+.btn-gradient-primary:hover {
+    background: linear-gradient(90deg, #0056b3, #003f7f);
+}
+
+/* Heading */
+h1 {
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    color: #007bff;
+}
+
+/* Input fields */
+.form-control {
+    border-radius: 8px;
+}
+
+/* Form container styling */
+.container {
+    max-width: 700px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+}
+
+/* Alerts */
+.alert {
+    font-weight: bold;
+}

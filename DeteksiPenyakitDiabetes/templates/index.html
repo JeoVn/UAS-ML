@@ -40,10 +40,10 @@
         <input type="number" class="form-control" id="umur" name="umur"  required step="any">
     </div>
     <button type="submit" class="btn btn-primary">Kirim</button>
-</form> 
+</form>  
 
 <!-- Menampilkan hasil prediksi -->
-  {% if result %}
+   {% if result %}
 <div class="alert alert-info mt-4">
     Hasil Prediksi: <strong>{{ result }}</strong>
 </div>
@@ -52,4 +52,6 @@
     {{ error }}
 </div>
 {% endif %}
-{% endblock %} 
+{% endblock %}  
+
+
