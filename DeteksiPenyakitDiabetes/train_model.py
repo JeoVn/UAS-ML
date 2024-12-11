@@ -96,56 +96,214 @@
 
 # print("Model dan scaler telah disimpan di:", model_path, "dan", scaler_path)
 
+# import pickle
+# import pandas as pd
+# import numpy as np
+
+# # Fungsi untuk menghitung jarak Euclidean
+# def euclidean_distance(x1, x2):
+#     return np.sqrt(np.sum((x1 - x2) ** 2))
+
+# # Implementasi KNN manual
+# class KNN:
+#     def __init__(self, n_neighbors=3):
+#         self.n_neighbors = n_neighbors
+    
+#     def fit(self, X, y):
+#         self.X_train = X
+#         self.y_train = y
+    
+#     def predict(self, X):
+#         predictions = [self._predict_single(x) for x in X]
+#         return np.array(predictions)
+    
+#     def _predict_single(self, x):
+#         # Hitung jarak ke semua titik dalam data training
+#         distances = [euclidean_distance(x, x_train) for x_train in self.X_train]
+        
+#         # Ambil indeks k tetangga terdekat
+#         k_indices = np.argsort(distances)[:self.n_neighbors]
+        
+#         # Ambil label dari k tetangga terdekat
+#         k_nearest_labels = [self.y_train[i] for i in k_indices]
+        
+#         # Return label yang paling sering muncul
+#         return np.bincount(k_nearest_labels).argmax()
+
+# # Membaca dataset
+# data = pd.read_csv('dataset/diabetes.csv')  # Ganti dengan path dataset Anda
+
+# # Cek kolom yang ada untuk memastikan kolom 'Outcome' ada
+# print(data.columns)
+
+# # Pastikan tidak ada missing values dalam dataset
+# if data.isnull().sum().any():
+#     print("Terdapat missing values, menghapus baris dengan missing values.")
+#     data = data.dropna()  # Menghapus baris dengan missing values, Anda bisa menyesuaikan sesuai kebutuhan
+
+# # Memisahkan fitur dan target
+# X_train = data.drop('Outcome', axis=1).values  # Ganti 'target' dengan 'Outcome' untuk kolom target
+# y_train = data['Outcome'].values  # Kolom target adalah 'Outcome'
+
+# # Melatih scaler
+# class StandardScalerManual:
+#     def __init__(self):
+#         self.mean = None
+#         self.std = None
+    
+#     def fit(self, X):
+#         self.mean = X.mean(axis=0)
+#         self.std = X.std(axis=0)
+    
+#     def transform(self, X):
+#         return (X - self.mean) / self.std
+    
+#     def fit_transform(self, X):
+#         self.fit(X)
+#         return self.transform(X)
+
+# # Normalisasi fitur
+# scaler = StandardScalerManual()
+# X_train_scaled = scaler.fit_transform(X_train)  # Menormalisasi fitur
+
+# # Membuat dan melatih model KNN manual
+# model = KNN(n_neighbors=3)
+# model.fit(X_train_scaled, y_train)
+
+# # Menyimpan model dan scaler ke file
+# model_path = 'models/knn_manual.pkl'
+# scaler_path = 'models/scaler_manual.pkl'
+
+# with open(model_path, 'wb') as f:
+#     pickle.dump(model, f)
+
+# with open(scaler_path, 'wb') as f:
+#     pickle.dump(scaler, f)
+
+# print("Model dan scaler telah disimpan di:", model_path, "dan", scaler_path)
+
+# import pickle
+# import pandas as pd
+# import numpy as np
+# from sklearn.model_selection import train_test_split
+# from sklearn.metrics import accuracy_score
+
+# # Fungsi untuk menghitung jarak Euclidean
+# def euclidean_distance(x1, x2):
+#     return np.sqrt(np.sum((x1 - x2) ** 2))
+
+# # Implementasi KNN manual
+# class KNN:
+#     def __init__(self, n_neighbors=3):
+#         self.n_neighbors = n_neighbors
+    
+#     def fit(self, X, y):
+#         self.X_train = X
+#         self.y_train = y
+    
+#     def predict(self, X):
+#         predictions = [self._predict_single(x) for x in X]
+#         return np.array(predictions)
+    
+#     def _predict_single(self, x):
+#         # Hitung jarak ke semua titik dalam data training
+#         distances = [euclidean_distance(x, x_train) for x_train in self.X_train]
+        
+#         # Ambil indeks k tetangga terdekat
+#         k_indices = np.argsort(distances)[:self.n_neighbors]
+        
+#         # Ambil label dari k tetangga terdekat
+#         k_nearest_labels = [self.y_train[i] for i in k_indices]
+        
+#         # Return label yang paling sering muncul
+#         return np.bincount(k_nearest_labels).argmax()
+
+# # Membaca dataset
+# data = pd.read_csv('dataset/diabetes.csv')  # Ganti dengan path dataset Anda
+
+# # Pastikan tidak ada missing values dalam dataset
+# if data.isnull().sum().any():
+#     print("Terdapat missing values, menghapus baris dengan missing values.")
+#     data = data.dropna()  # Menghapus baris dengan missing values, Anda bisa menyesuaikan sesuai kebutuhan
+
+# # Memisahkan fitur dan target
+# X = data.drop('Outcome', axis=1).values  # Fitur
+# y = data['Outcome'].values  # Target
+
+# # Split dataset menjadi data train dan test
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# # Normalisasi fitur
+# class StandardScalerManual:
+#     def __init__(self):
+#         self.mean = None
+#         self.std = None
+    
+#     def fit(self, X):
+#         self.mean = X.mean(axis=0)
+#         self.std = X.std(axis=0)
+    
+#     def transform(self, X):
+#         return (X - self.mean) / self.std
+    
+#     def fit_transform(self, X):
+#         self.fit(X)
+#         return self.transform(X)
+
+# scaler = StandardScalerManual()
+# X_train_scaled = scaler.fit_transform(X_train)  # Menormalisasi fitur training
+
+# # Membuat dan melatih model KNN manual
+# model = KNN(n_neighbors=3)
+# model.fit(X_train_scaled, y_train)
+
+# # Menormalisasi data uji
+# X_test_scaled = scaler.transform(X_test)  # Menormalisasi fitur testing
+
+# # Melakukan prediksi pada data uji
+# y_pred = model.predict(X_test_scaled)
+
+# # Menghitung akurasi
+# accuracy = accuracy_score(y_test, y_pred)
+
+# # Menampilkan akurasi dalam bentuk persentase
+# print(f"Akurasi Model: {accuracy * 100:.2f}%")
+
+# # Menyimpan model dan scaler ke file
+# model_path = 'models/knn_manual.pkl'
+# scaler_path = 'models/scaler_manual.pkl'
+
+# with open(model_path, 'wb') as f:
+#     pickle.dump(model, f)
+
+# with open(scaler_path, 'wb') as f:
+#     pickle.dump(scaler, f)
+
+# print("Model dan scaler telah disimpan di:", model_path, "dan", scaler_path)
+
 import pickle
 import pandas as pd
 import numpy as np
-
-# Fungsi untuk menghitung jarak Euclidean
-def euclidean_distance(x1, x2):
-    return np.sqrt(np.sum((x1 - x2) ** 2))
-
-# Implementasi KNN manual
-class KNN:
-    def __init__(self, n_neighbors=3):
-        self.n_neighbors = n_neighbors
-    
-    def fit(self, X, y):
-        self.X_train = X
-        self.y_train = y
-    
-    def predict(self, X):
-        predictions = [self._predict_single(x) for x in X]
-        return np.array(predictions)
-    
-    def _predict_single(self, x):
-        # Hitung jarak ke semua titik dalam data training
-        distances = [euclidean_distance(x, x_train) for x_train in self.X_train]
-        
-        # Ambil indeks k tetangga terdekat
-        k_indices = np.argsort(distances)[:self.n_neighbors]
-        
-        # Ambil label dari k tetangga terdekat
-        k_nearest_labels = [self.y_train[i] for i in k_indices]
-        
-        # Return label yang paling sering muncul
-        return np.bincount(k_nearest_labels).argmax()
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
 
 # Membaca dataset
-data = pd.read_csv('dataset/diabetes.csv')  # Ganti dengan path dataset Anda
-
-# Cek kolom yang ada untuk memastikan kolom 'Outcome' ada
-print(data.columns)
+data = pd.read_csv('dataset/diabetes.csv')
 
 # Pastikan tidak ada missing values dalam dataset
 if data.isnull().sum().any():
     print("Terdapat missing values, menghapus baris dengan missing values.")
-    data = data.dropna()  # Menghapus baris dengan missing values, Anda bisa menyesuaikan sesuai kebutuhan
+    data = data.dropna()
 
 # Memisahkan fitur dan target
-X_train = data.drop('Outcome', axis=1).values  # Ganti 'target' dengan 'Outcome' untuk kolom target
-y_train = data['Outcome'].values  # Kolom target adalah 'Outcome'
+X = data.drop('Outcome', axis=1).values  # Fitur
+y = data['Outcome'].values  # Target
 
-# Melatih scaler
+# Split dataset menjadi data train dan test
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Normalisasi fitur
 class StandardScalerManual:
     def __init__(self):
         self.mean = None
@@ -162,20 +320,42 @@ class StandardScalerManual:
         self.fit(X)
         return self.transform(X)
 
-# Normalisasi fitur
 scaler = StandardScalerManual()
-X_train_scaled = scaler.fit_transform(X_train)  # Menormalisasi fitur
+X_train_scaled = scaler.fit_transform(X_train)  # Menormalisasi fitur training
 
-# Membuat dan melatih model KNN manual
-model = KNN(n_neighbors=3)
-model.fit(X_train_scaled, y_train)
+# Hyperparameter Tuning menggunakan GridSearchCV
+param_grid = {'n_neighbors': [3, 5, 7, 9, 11], 'metric': ['euclidean', 'manhattan', 'minkowski']}
+knn = KNeighborsClassifier()
+
+# Melakukan GridSearchCV untuk tuning hyperparameter
+grid_search = GridSearchCV(knn, param_grid, cv=5, scoring='accuracy')
+grid_search.fit(X_train_scaled, y_train)
+
+# Menampilkan parameter terbaik
+print("Best Parameters:", grid_search.best_params_)
+print("Best Score (Accuracy):", grid_search.best_score_)
+
+# Menggunakan parameter terbaik untuk model final
+best_knn = grid_search.best_estimator_
+
+# Melakukan normalisasi pada data uji
+X_test_scaled = scaler.transform(X_test)
+
+# Melakukan prediksi pada data uji
+y_pred = best_knn.predict(X_test_scaled)
+
+# Menghitung akurasi
+accuracy = accuracy_score(y_test, y_pred)
+
+# Menampilkan akurasi dalam bentuk persentase
+print(f"Akurasi Model: {accuracy * 100:.2f}%")
 
 # Menyimpan model dan scaler ke file
-model_path = 'models/knn_manual.pkl'
+model_path = 'models/knn_manual_best.pkl'
 scaler_path = 'models/scaler_manual.pkl'
 
 with open(model_path, 'wb') as f:
-    pickle.dump(model, f)
+    pickle.dump(best_knn, f)
 
 with open(scaler_path, 'wb') as f:
     pickle.dump(scaler, f)
