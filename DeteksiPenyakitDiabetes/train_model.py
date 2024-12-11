@@ -281,83 +281,232 @@
 
 # print("Model dan scaler telah disimpan di:", model_path, "dan", scaler_path)
 
-import pickle
-import pandas as pd
+# import pickle
+# import pandas as pd
+# import numpy as np
+# from sklearn.model_selection import train_test_split, GridSearchCV
+# from sklearn.neighbors import KNeighborsClassifier
+# from sklearn.metrics import accuracy_score
+
+# # Membaca dataset
+# data = pd.read_csv('dataset/diabetes.csv')
+
+# # Pastikan tidak ada missing values dalam dataset
+# if data.isnull().sum().any():
+#     print("Terdapat missing values, menghapus baris dengan missing values.")
+#     data = data.dropna()
+
+# # Memisahkan fitur dan target
+# X = data.drop('Outcome', axis=1).values  # Fitur
+# y = data['Outcome'].values  # Target
+
+# # Split dataset menjadi data train dan test
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# # Normalisasi fitur
+# class StandardScalerManual:
+#     def __init__(self):
+#         self.mean = None
+#         self.std = None
+    
+#     def fit(self, X):
+#         self.mean = X.mean(axis=0)
+#         self.std = X.std(axis=0)
+    
+#     def transform(self, X):
+#         return (X - self.mean) / self.std
+    
+#     def fit_transform(self, X):
+#         self.fit(X)
+#         return self.transform(X)
+
+# scaler = StandardScalerManual()
+# X_train_scaled = scaler.fit_transform(X_train)  # Menormalisasi fitur training
+
+# # Hyperparameter Tuning menggunakan GridSearchCV
+# param_grid = {'n_neighbors': [3, 5, 7, 9, 11], 'metric': ['euclidean', 'manhattan', 'minkowski']}
+# knn = KNeighborsClassifier()
+
+# # Melakukan GridSearchCV untuk tuning hyperparameter
+# grid_search = GridSearchCV(knn, param_grid, cv=5, scoring='accuracy')
+# grid_search.fit(X_train_scaled, y_train)
+
+# # Menampilkan parameter terbaik
+# print("Best Parameters:", grid_search.best_params_)
+# print("Best Score (Accuracy):", grid_search.best_score_)
+
+# # Menggunakan parameter terbaik untuk model final
+# best_knn = grid_search.best_estimator_
+
+# # Melakukan normalisasi pada data uji
+# X_test_scaled = scaler.transform(X_test)
+
+# # Melakukan prediksi pada data uji
+# y_pred = best_knn.predict(X_test_scaled)
+
+# # Menghitung akurasi
+# accuracy = accuracy_score(y_test, y_pred)
+
+# # Menampilkan akurasi dalam bentuk persentase
+# print(f"Akurasi Model: {accuracy * 100:.2f}%")
+
+# # Menyimpan model dan scaler ke file
+# model_path = 'models/knn_manual_best.pkl'
+# scaler_path = 'models/scaler_manual.pkl'
+
+# with open(model_path, 'wb') as f:
+#     pickle.dump(best_knn, f)
+
+# with open(scaler_path, 'wb') as f:
+#     pickle.dump(scaler, f)
+
+# print("Model dan scaler telah disimpan di:", model_path, "dan", scaler_path)
+
 import numpy as np
-from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.metrics import accuracy_score
+import pandas as pd
+from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import classification_report, accuracy_score
+from sklearn.utils import resample
+from sklearn.base import BaseEstimator, ClassifierMixin
 
-# Membaca dataset
+# Custom KNN Implementation
+class CustomKNN(BaseEstimator, ClassifierMixin):
+    def __init__(self, n_neighbors=5, metric='euclidean'):
+        self.n_neighbors = n_neighbors
+        self.metric = metric
+
+    def fit(self, X, y):
+        self.X_train = X
+        self.y_train = y
+        return self
+
+    def predict(self, X):
+        return np.array([self._predict_single(x) for x in X])
+
+    def _predict_single(self, x):
+        distances = [self._compute_distance(x, x_train) for x_train in self.X_train]
+        k_indices = np.argsort(distances)[:self.n_neighbors]
+        k_nearest_labels = [self.y_train[i] for i in k_indices]
+        return max(set(k_nearest_labels), key=k_nearest_labels.count)
+
+    def _compute_distance(self, x1, x2):
+        if self.metric == 'euclidean':
+            return np.sqrt(np.sum((x1 - x2) ** 2))
+        elif self.metric == 'manhattan':
+            return np.sum(np.abs(x1 - x2))
+        else:
+            raise ValueError("Unsupported metric")
+
+# Load and preprocess the dataset
 data = pd.read_csv('dataset/diabetes.csv')
+X = data.iloc[:, :-1].values
+y = data.iloc[:, -1].values
 
-# Pastikan tidak ada missing values dalam dataset
-if data.isnull().sum().any():
-    print("Terdapat missing values, menghapus baris dengan missing values.")
-    data = data.dropna()
+# Balance dataset with oversampling
+X_resampled, y_resampled = resample(X[y == 1], y[y == 1], replace=True, n_samples=y[y == 0].shape[0], random_state=42)
+X_balanced = np.vstack((X[y == 0], X_resampled))
+y_balanced = np.hstack((y[y == 0], y_resampled))
 
-# Memisahkan fitur dan target
-X = data.drop('Outcome', axis=1).values  # Fitur
-y = data['Outcome'].values  # Target
+# Split into training and testing sets
+# X_train, X_test, y_train, y_test = train_test_split(X_balanced, y_balanced, test_size=0.2, random_state=42)
 
-# Split dataset menjadi data train dan test
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# 3. Split data into training and test sets
+train_ratio = 0.8  # 80% data untuk training
+# untuk balance akurasi dan cross vali nya
+X_train, X_test, y_train, y_test = train_test_split(X_balanced, y_balanced, test_size=0.2, random_state=42)
 
-# Normalisasi fitur
-class StandardScalerManual:
-    def __init__(self):
-        self.mean = None
-        self.std = None
-    
-    def fit(self, X):
-        self.mean = X.mean(axis=0)
-        self.std = X.std(axis=0)
-    
-    def transform(self, X):
-        return (X - self.mean) / self.std
-    
-    def fit_transform(self, X):
-        self.fit(X)
-        return self.transform(X)
+# Menampilkan jumlah data training dan data testing
+print(f"Jumlah data training: {len(X_train)} ({train_ratio * 100:.0f}%)")
+print(f"Jumlah data testing: {len(X_test)} ({(1 - train_ratio) * 100:.0f}%)")
 
-scaler = StandardScalerManual()
-X_train_scaled = scaler.fit_transform(X_train)  # Menormalisasi fitur training
+# Normalize features
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
 
-# Hyperparameter Tuning menggunakan GridSearchCV
-param_grid = {'n_neighbors': [3, 5, 7, 9, 11], 'metric': ['euclidean', 'manhattan', 'minkowski']}
-knn = KNeighborsClassifier()
+# Hyperparameter tuning with GridSearchCV
+param_grid = {
+    'n_neighbors': [3, 5, 7, 9],
+    'metric': ['euclidean', 'manhattan']
+}
 
-# Melakukan GridSearchCV untuk tuning hyperparameter
-grid_search = GridSearchCV(knn, param_grid, cv=5, scoring='accuracy')
-grid_search.fit(X_train_scaled, y_train)
+grid_search = GridSearchCV(CustomKNN(), param_grid, cv=5, scoring='accuracy', verbose=1, n_jobs=-1)
+grid_search.fit(X_train, y_train)
 
-# Menampilkan parameter terbaik
-print("Best Parameters:", grid_search.best_params_)
-print("Best Score (Accuracy):", grid_search.best_score_)
-
-# Menggunakan parameter terbaik untuk model final
+# Evaluate best model
 best_knn = grid_search.best_estimator_
+y_pred = best_knn.predict(X_test)
+print("Best Parameters:", grid_search.best_params_)
+print("Classification Report:\n", classification_report(y_test, y_pred))
+print(f"Test Accuracy: {accuracy_score(y_test, y_pred) * 100:.2f}%")
 
-# Melakukan normalisasi pada data uji
-X_test_scaled = scaler.transform(X_test)
+# Cross-validation score
+cv_scores = cross_val_score(best_knn, X_train, y_train, cv=5, scoring='accuracy')
+print(f"Cross-Validation Accuracy: {np.mean(cv_scores) * 100:.2f}%")
 
-# Melakukan prediksi pada data uji
-y_pred = best_knn.predict(X_test_scaled)
 
-# Menghitung akurasi
-accuracy = accuracy_score(y_test, y_pred)
+# import numpy as np
+# import pandas as pd
+# from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score
+# from sklearn.preprocessing import StandardScaler
+# from sklearn.neighbors import KNeighborsClassifier
+# from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
+# from imblearn.over_sampling import SMOTE
 
-# Menampilkan akurasi dalam bentuk persentase
-print(f"Akurasi Model: {accuracy * 100:.2f}%")
+# # 1. Load dataset
+# data = pd.read_csv('dataset/diabetes.csv')
+# X = data.iloc[:, :-1]  # Semua kolom kecuali target
+# y = data.iloc[:, -1]  # Kolom target
 
-# Menyimpan model dan scaler ke file
-model_path = 'models/knn_manual_best.pkl'
-scaler_path = 'models/scaler_manual.pkl'
+# # 2. Handle missing values
+# X.fillna(X.median(), inplace=True)  # Ganti nilai kosong dengan median
 
-with open(model_path, 'wb') as f:
-    pickle.dump(best_knn, f)
+# # 3. Balance dataset (SMOTE)
+# smote = SMOTE(random_state=42)
+# X_resampled, y_resampled = smote.fit_resample(X, y)
 
-with open(scaler_path, 'wb') as f:
-    pickle.dump(scaler, f)
+# # 4. Split data into training and test sets
+# train_ratio = 0.8  # 80% data untuk training
+# X_train, X_test, y_train, y_test = train_test_split(X_resampled, y_resampled, test_size=(1 - train_ratio), random_state=42)
 
-print("Model dan scaler telah disimpan di:", model_path, "dan", scaler_path)
+# # Print dataset split info
+# print(f"Jumlah data training: {len(X_train)} ({train_ratio * 100:.0f}%)")
+# print(f"Jumlah data testing: {len(X_test)} ({(1 - train_ratio) * 100:.0f}%)")
+
+# # 5. Normalize data
+# scaler = StandardScaler()
+# X_train = scaler.fit_transform(X_train)
+# X_test = scaler.transform(X_test)
+
+# # 6. Hyperparameter tuning using GridSearchCV
+# param_grid = {
+#     'n_neighbors': range(1, 31),  # Uji nilai k dari 1 hingga 30
+#     'weights': ['uniform', 'distance'],  # Coba bobot uniform dan distance
+#     'metric': ['euclidean', 'manhattan', 'minkowski']  # Jarak yang berbeda
+# }
+
+# knn = KNeighborsClassifier()
+# grid_search = GridSearchCV(knn, param_grid, cv=5, scoring='accuracy', verbose=1, n_jobs=-1)
+# grid_search.fit(X_train, y_train)
+
+# # 7. Best parameters and evaluation
+# best_knn = grid_search.best_estimator_
+# print("Best Parameters:", grid_search.best_params_)
+
+# # Cross-validation score
+# cv_scores = cross_val_score(best_knn, X_train, y_train, cv=5, scoring='accuracy')
+# print(f"Cross-Validation Accuracy: {np.mean(cv_scores) * 100:.2f}%")
+
+# # Evaluate on test set
+# y_pred = best_knn.predict(X_test)
+# print("Confusion Matrix:\n", confusion_matrix(y_test, y_pred))
+# print("Classification Report:\n", classification_report(y_test, y_pred))
+
+# # Calculate and display test accuracy
+# test_accuracy = accuracy_score(y_test, y_pred)
+# print(f"Test Accuracy: {test_accuracy * 100:.2f}%")
+
+# # 8. Save the model (optional)
+# import joblib
+# joblib.dump(best_knn, "optimized_knn_model.pkl")
