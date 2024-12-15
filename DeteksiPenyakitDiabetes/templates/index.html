@@ -3,47 +3,88 @@
 {% block title %}Form Deteksi Diabetes{% endblock %}
 
 {% block content %}
-<h1 class="my-4">Deteksi Diabetes</h1>
-<form method="POST">
-   
-    <div class="mb-3">
-        <label for="melahirkan" class="form-label">Melahirkan</label>
-        <input type="number" class="form-control" id="melahirkan" name="melahirkan" required>
+
+<!-- Button to open explanation modal -->
+<button class="btn btn-gradient-primary btn-lg mb-4" onclick="showExplanation()">Lihat Penjelasan</button>
+
+<div class="container my-5">
+    <div class="text-center mb-4">
+        <h1 class="display-4 text-primary"><b>SweetGuard</b></h1>
+        <p class="lead text-secondary">Protecting Health, Sweetly and Safely.</p>
     </div>
-    
-    <div class="mb-3">
-        <label for="glukosa" class="form-label">Kadar Glukosa</label>
-        <input type="number" class="form-control" id="glukosa" name="glukosa" required>
+    <form method="POST" class="p-4 rounded shadow bg-white">
+        <div class="form-group mb-4">
+            <label for="melahirkan" class="form-label font-weight-bold">Jumlah Kehamilan</label>
+            <input type="number" class="form-control" id="melahirkan" name="melahirkan"  required step="any">
+        </div>
+        <div class="form-group mb-4">
+            <label for="glukosa" class="form-label font-weight-bold">Kadar Glukosa</label>
+            <input type="number" class="form-control" id="glukosa" name="glukosa"  required step="any">
+        </div>
+        <div class="form-group mb-4">
+            <label for="darah" class="form-label font-weight-bold">Tekanan Darah</label>
+            <input type="number" class="form-control" id="darah" name="darah"  required step="any">
+        </div>
+        <div class="form-group mb-4">
+            <label for="kulit" class="form-label font-weight-bold">Ketebalan Lipatan Kulit</label>
+            <input type="number" class="form-control" id="kulit" name="kulit"  required step="any">
+        </div>
+        <div class="form-group mb-4">
+            <label for="insulin" class="form-label font-weight-bold">Insulin</label>
+            <input type="number" class="form-control" id="insulin" name="insulin"  required step="any">
+        </div>
+        <div class="form-group mb-4">
+            <label for="bmi" class="form-label font-weight-bold">BMI</label>
+            <input type="number" class="form-control" id="bmi" name="bmi"  required step="any">
+
+        </div>
+        <div class="form-group mb-4">
+            <label for="riwayat_diabetes" class="form-label font-weight-bold">Riwayat Diabetes</label>
+            <input type="number" class="form-control" id="riwayat_diabetes" name="riwayat_diabetes"  required step="any">
+        </div>
+        <div class="form-group mb-4">
+            <label for="umur" class="form-label font-weight-bold">Umur</label>
+            <input type="number" class="form-control" id="umur" name="umur"  required step="any">
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary btn-lg">Kirim</button>
+        </div>
+    </form>
+</div>
+
+<!-- Modal for explanations -->
+<div class="modal" id="explanationModal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Penjelasan</h2>
+        <p><strong>Jumlah Kehamilan:</strong> Berapa kali seorang wanita hamil selama hidupnya.</p>
+        <p><strong>Kadar Glukosa:</strong> Persentase gula darah dalam tes toleransi glukosa.</p>
+        <p><strong>Tekanan Darah:</strong> Mengukur tekanan darah diastolik dalam mmHg.</p>
+        <p><strong>Ketebalan Lipatan Kulit:</strong> Ukur ketebalan lipatan kulit trisep untuk menilai lemak tubuh dan risiko kesehatan.</p>
+        <p><strong>Insulin:</strong> Mengukur kadar insulin dalam serum darah yang berhubungan dengan pengaturan gula darah.</p>
+        <p><strong>BMI:</strong> Indeks Massa Tubuh.</p>
+        <p><strong>Riwayat Diabetes:</strong> Menilai risiko diabetes berdasarkan riwayat penyakit dalam keluarga.</p>
+        <p><strong>Umur:</strong> Usia dapat mempengaruhi risiko diabetes.</p>
     </div>
-    <div class="mb-3">
-        <label for="darah" class="form-label">Tekanan Darah</label>
-        <input type="number" class="form-control" id="darah" name="darah" required step="any">
-    </div>
-    <div class="mb-3">
-        <label for="kulit" class="form-label">Kulit</label>
-        <input type="number" class="form-control" id="kulit" name="kulit"  required step="any">
-    </div>
-    <div class="mb-3">
-        <label for="insulin" class="form-label">Insulin</label>
-        <input type="number" class="form-control" id="insulin" name="insulin" required step="any">
-    </div>
-    <div class="mb-3">
-        <label for="bmi" class="form-label">BMI</label>
-        <input type="number" class="form-control" id="bmi" name="bmi"  required step="any">
-    </div>
-    <div class="mb-3">
-        <label for="riwayat_diabetes" class="form-label">Riwayat Diabetes</label>
-        <input type="number" class="form-control" id="riwayat_diabetes" name="riwayat_diabetes"  required step="any">
-    </div>
-    <div class="mb-3">
-        <label for="umur" class="form-label">Umur</label>
-        <input type="number" class="form-control" id="umur" name="umur"  required step="any">
-    </div>
-    <button type="submit" class="btn btn-primary">Kirim</button>
-</form>  
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- JavaScript for Modal -->
+<script>
+    function showExplanation() {
+        document.getElementById("explanationModal").style.display = "block";
+    }
+
+    function closeModal() {
+        document.getElementById("explanationModal").style.display = "none";
+    }
+</script>
 
 <!-- Menampilkan hasil prediksi -->
-   {% if result %}
+{% if result %}
 <div class="alert alert-info mt-4">
     Hasil Prediksi: <strong>{{ result }}</strong>
 </div>
@@ -52,6 +93,5 @@
     {{ error }}
 </div>
 {% endif %}
-{% endblock %}  
 
-
+{% endblock %}
