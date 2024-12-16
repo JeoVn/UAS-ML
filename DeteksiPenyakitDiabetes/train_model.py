@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import pickle
 from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
@@ -59,9 +60,14 @@ grid_search = GridSearchCV(CustomKNN(), param_grid, cv=5, scoring='accuracy', ve
 grid_search.fit(X_train, y_train)
 
 best_knn = grid_search.best_estimator_
+
 y_pred = best_knn.predict(X_test)
 print("Best Parameters:", grid_search.best_params_)
 print("Classification Report:\n", classification_report(y_test, y_pred))
+
+with open('models/knn_best.pkl', 'wb') as file:
+    pickle.dump(best_knn, file)
+print("Model terbaik berhasil disimpan")
 
 conf_matrix = confusion_matrix(y_test, y_pred)
 print("Confusion Matrix:\n", conf_matrix)

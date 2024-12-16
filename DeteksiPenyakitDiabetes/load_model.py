@@ -1,14 +1,22 @@
 import pickle
 import os
-import numpy as np
+model_paths = {
+    'knn_pickle': 'models/knn_pickle.pkl',
+    'knn_best': 'models/knn_best.pkl'
+}
 
-output_path = 'models/knn_pickle.pkl'
+loaded_models = {}
 
-if os.path.exists(output_path):
-    with open(output_path, 'rb') as file:
-        model = pickle.load(file)
-    print("Model berhasil dimuat!")
-    print(model)
-    
-else:
-    print(f"File model tidak ditemukan di path: {output_path}")
+for model_name, path in model_paths.items():
+    if os.path.exists(path):
+        with open(path, 'rb') as file:
+            loaded_models[model_name] = pickle.load(file)
+        print(f"Model {model_name} berhasil dimuat!")
+    else:
+        print(f"File model {model_name}.pkl tidak ditemukan di path: {path}")
+
+if 'knn_best' in loaded_models:
+    print("Model terbaik :", loaded_models['knn_best'])
+
+if 'knn_pickle' in loaded_models:
+    print("Model biasa :", loaded_models['knn_pickle'])

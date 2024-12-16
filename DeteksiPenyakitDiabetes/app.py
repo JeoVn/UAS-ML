@@ -18,7 +18,7 @@ def index():
     if request.method == 'POST':
         try:
             if not os.path.exists(MODEL_PATH) or not os.path.exists(SCALER_PATH):
-                return render_template('index.html', error="File model atau scaler tidak ditemukan. Pastikan file berada di lokasi yang benar.")
+                return render_template('index.html', error="File model tidak ditemukan.")
 
             with open(MODEL_PATH, 'rb') as r:
                 model = pickle.load(r)
@@ -47,7 +47,7 @@ def index():
             result = "POSITIF DIABETES" if isDiabetes[0] == 1 else "NEGATIF DIABETES"
             return render_template('index.html', result=result)  
         except ValueError:
-            return render_template('index.html', error="Input tidak valid. Pastikan semua data yang dimasukkan adalah angka.")
+            return render_template('index.html', error="Input tidak valid, input hanya diterima berupa angka")
         except Exception as e:
             return render_template('index.html', error=f"Terjadi kesalahan saat melakukan prediksi: {e}")
     else:
