@@ -4,8 +4,6 @@
 
 {% block content %}
 
-<!-- Button to open explanation modal -->
-<button class="btn btn-gradient-primary btn-lg mb-4" onclick="showExplanation()">Lihat Penjelasan</button>
 
 <div class="container my-5">
     <div class="text-center mb-4">
@@ -14,76 +12,76 @@
     </div>
     <form method="POST" class="p-4 rounded shadow bg-white">
         <div class="form-group mb-4">
-            <label for="melahirkan" class="form-label font-weight-bold">Jumlah Kehamilan</label>
+            <label for="melahirkan" class="form-label font-weight-bold"><b>Jumlah Kehamilan</b></label>
+            <p> Berapa kali seorang wanita pernah hamil selama hidupnya, jika pria maka 0 </p>
             <input type="number" class="form-control" id="melahirkan" name="melahirkan"  required step="any">
         </div>
         <div class="form-group mb-4">
-            <label for="glukosa" class="form-label font-weight-bold">Kadar Glukosa</label>
+            <label for="glukosa" class="form-label font-weight-bold"><b>Kadar Glukosa</b></label>
+            <p> Persentase gula darah dalam tes toleransi glukosa </p>
             <input type="number" class="form-control" id="glukosa" name="glukosa"  required step="any">
         </div>
         <div class="form-group mb-4">
-            <label for="darah" class="form-label font-weight-bold">Tekanan Darah</label>
+            <label for="darah" class="form-label font-weight-bold"><b>Tekanan Darah</b></label>
+            <p> Tekanan darah diastolik dalam mmHg </p>
             <input type="number" class="form-control" id="darah" name="darah"  required step="any">
         </div>
         <div class="form-group mb-4">
-            <label for="kulit" class="form-label font-weight-bold">Ketebalan Lipatan Kulit</label>
+            <label for="kulit" class="form-label font-weight-bold"><b>Ketebalan Lipatan Kulit</b></label>
+            <p>  Ketebalan lipatan kulit trisep  </p>
             <input type="number" class="form-control" id="kulit" name="kulit"  required step="any">
         </div>
         <div class="form-group mb-4">
-            <label for="insulin" class="form-label font-weight-bold">Insulin</label>
+            <label for="insulin" class="form-label font-weight-bold"><b>Insulin</b></label>
+            <p> Kadar insulin dalam serum darah </p>
             <input type="number" class="form-control" id="insulin" name="insulin"  required step="any">
         </div>
         <div class="form-group mb-4">
-            <label for="bmi" class="form-label font-weight-bold">BMI</label>
+            <label for="bmi" class="form-label font-weight-bold"><b>BMI</b></label>
+            <p> Indeks Massa Tubuh </p>
             <input type="number" class="form-control" id="bmi" name="bmi"  required step="any">
 
         </div>
         <div class="form-group mb-4">
-            <label for="riwayat_diabetes" class="form-label font-weight-bold">Riwayat Diabetes</label>
+            <label for="riwayat_diabetes" class="form-label font-weight-bold"><b>Riwayat Genetik Diabetes</b></label>
+            <p> Riwayat penyakit diabetes dalam keluarga </p>
             <input type="number" class="form-control" id="riwayat_diabetes" name="riwayat_diabetes"  required step="any">
         </div>
         <div class="form-group mb-4">
-            <label for="umur" class="form-label font-weight-bold">Umur</label>
+            <label for="umur" class="form-label font-weight-bold"><b>Usia</b></label>
             <input type="number" class="form-control" id="umur" name="umur"  required step="any">
+         
         </div>
-        <div class="text-center">
+        <!-- <div class="text-center">
             <button type="submit" class="btn btn-primary btn-lg">Kirim</button>
-        </div>
+        </div> -->
+        <!-- Form HTML -->
+<form method="POST" class="p-4 rounded shadow bg-white">
+    <!-- Form fields here -->
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary btn-lg">Kirim</button>
+    </div>
+</form>
     </form>
 </div>
 
-<!-- Modal for explanations -->
-<div class="modal" id="explanationModal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <h2>Penjelasan</h2>
-        <p><strong>Jumlah Kehamilan:</strong> Berapa kali seorang wanita hamil selama hidupnya.</p>
-        <p><strong>Kadar Glukosa:</strong> Persentase gula darah dalam tes toleransi glukosa.</p>
-        <p><strong>Tekanan Darah:</strong> Mengukur tekanan darah diastolik dalam mmHg.</p>
-        <p><strong>Ketebalan Lipatan Kulit:</strong> Ukur ketebalan lipatan kulit trisep untuk menilai lemak tubuh dan risiko kesehatan.</p>
-        <p><strong>Insulin:</strong> Mengukur kadar insulin dalam serum darah yang berhubungan dengan pengaturan gula darah.</p>
-        <p><strong>BMI:</strong> Indeks Massa Tubuh.</p>
-        <p><strong>Riwayat Diabetes:</strong> Menilai risiko diabetes berdasarkan riwayat penyakit dalam keluarga.</p>
-        <p><strong>Umur:</strong> Usia dapat mempengaruhi risiko diabetes.</p>
-    </div>
-</div>
+
+
 
 <!-- Bootstrap JS and dependencies -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- JavaScript for Modal -->
-<script>
-    function showExplanation() {
-        document.getElementById("explanationModal").style.display = "block";
-    }
+<!-- Form HTML -->
+<!-- <form method="POST" class="p-4 rounded shadow bg-white">
+    Form fields here -->
+    <!-- <div class="text-center">
+        <button type="submit" class="btn btn-primary btn-lg">Kirim</button>
+    </div>
+</form>  -->
 
-    function closeModal() {
-        document.getElementById("explanationModal").style.display = "none";
-    }
-</script>
 
-<!-- Menampilkan hasil prediksi -->
+ <!-- Menampilkan hasil prediksi -->
 {% if result %}
 <div class="alert alert-info mt-4">
     Hasil Prediksi: <strong>{{ result }}</strong>
@@ -94,4 +92,17 @@
 </div>
 {% endif %}
 
+{% block script %}
+<script>
+   document.getElementById("diabetesForm").addEventListener("submit", function(event) {
+    event.preventDefault(); 
+    var form = this;
+    var resultDiv = document.getElementById("predictionResult");
+    
+    resultDiv.style.display = "block"; 
+});
+
+
+</script>
+{% endblock %}
 {% endblock %}
