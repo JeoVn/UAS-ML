@@ -6,7 +6,6 @@ from sklearn.metrics import classification_report, confusion_matrix, accuracy_sc
 from sklearn.utils import resample
 from sklearn.base import BaseEstimator, ClassifierMixin
 
-# Custom KNN Implementation
 class CustomKNN(BaseEstimator, ClassifierMixin):
     def __init__(self, n_neighbors=5, metric='euclidean'):
         self.n_neighbors = n_neighbors
@@ -32,31 +31,25 @@ class CustomKNN(BaseEstimator, ClassifierMixin):
         elif self.metric == 'manhattan':
             return np.sum(np.abs(x1 - x2))
         else:
-            raise ValueError("Unsupported metric")
+            raise ValueError("metrik salah")
 
-# Load and preprocess the dataset
 data = pd.read_csv('dataset/diabetes.csv')
 X = data.iloc[:, :-1].values
 y = data.iloc[:, -1].values
 
-# Balance dataset with oversampling
 X_resampled, y_resampled = resample(X[y == 1], y[y == 1], replace=True, n_samples=y[y == 0].shape[0], random_state=42)
 X_balanced = np.vstack((X[y == 0], X_resampled))
 y_balanced = np.hstack((y[y == 0], y_resampled))
 
-# Split into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X_balanced, y_balanced, test_size=0.2, random_state=42)
 
-# Menampilkan jumlah data training dan data testing
 print(f"Jumlah data training: {len(X_train)}")
 print(f"Jumlah data testing: {len(X_test)}")
 
-# Normalize features
 scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
-# Hyperparameter tuning with GridSearchCV
 param_grid = {
     'n_neighbors': [3, 5, 7, 9],
     'metric': ['euclidean', 'manhattan']
@@ -65,17 +58,14 @@ param_grid = {
 grid_search = GridSearchCV(CustomKNN(), param_grid, cv=5, scoring='accuracy', verbose=1, n_jobs=-1)
 grid_search.fit(X_train, y_train)
 
-# Evaluate best model
 best_knn = grid_search.best_estimator_
 y_pred = best_knn.predict(X_test)
 print("Best Parameters:", grid_search.best_params_)
 print("Classification Report:\n", classification_report(y_test, y_pred))
 
-# Confusion Matrix
 conf_matrix = confusion_matrix(y_test, y_pred)
 print("Confusion Matrix:\n", conf_matrix)
 
-# F1-score, Precision, and Recall
 report = classification_report(y_test, y_pred, output_dict=True)
 f1_score_class_0 = report['0']['f1-score']
 f1_score_class_1 = report['1']['f1-score']
@@ -91,10 +81,8 @@ print(f"Precision untuk kelas 1: {precision_class_1:.2f}")
 print(f"Recall untuk kelas 0: {recall_class_0:.2f}")
 print(f"Recall untuk kelas 1: {recall_class_1:.2f}")
 
-# Test Accuracy
 print(f"Test Accuracy: {accuracy_score(y_test, y_pred) * 100:.2f}%")
 
-# Cross-validation score
 cv_scores = cross_val_score(best_knn, X_train, y_train, cv=5, scoring='accuracy')
 print(f"Cross-Validation Accuracy: {np.mean(cv_scores) * 100:.2f}%")
 

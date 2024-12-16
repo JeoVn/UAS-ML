@@ -52,12 +52,8 @@
             <input type="number" class="form-control" id="umur" name="umur"  required step="any">
          
         </div>
-        <!-- <div class="text-center">
-            <button type="submit" class="btn btn-primary btn-lg">Kirim</button>
-        </div> -->
-        <!-- Form HTML -->
+    
 <form method="POST" class="p-4 rounded shadow bg-white">
-    <!-- Form fields here -->
     <div class="text-center">
         <button type="submit" class="btn btn-primary btn-lg">Kirim</button>
     </div>
@@ -65,23 +61,9 @@
     </form>
 </div>
 
-
-
-
-<!-- Bootstrap JS and dependencies -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Form HTML -->
-<!-- <form method="POST" class="p-4 rounded shadow bg-white">
-    Form fields here -->
-    <!-- <div class="text-center">
-        <button type="submit" class="btn btn-primary btn-lg">Kirim</button>
-    </div>
-</form>  -->
-
-
- <!-- Menampilkan hasil prediksi -->
 {% if result %}
 <div class="alert alert-info mt-4">
     Hasil Prediksi: <strong>{{ result }}</strong>

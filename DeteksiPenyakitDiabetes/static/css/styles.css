@@ -1,30 +1,15 @@
-/* styles.css */
-
-/* Tombol dengan efek gradien */
 .btn-gradient-primary {
     background: linear-gradient(90deg, #000000, #0056b3);
     color: white;
     border: none;
-    transition: background 0.3s ease;
 }
 
-.btn-gradient-primary:hover {
-    background: linear-gradient(90deg, #0056b3, #003f7f);
-}
-
-/* Heading */
 h1 {
     font-family: 'Arial', sans-serif;
     font-weight: bold;
     color: #007bff;
 }
 
-/* Input fields */
-.form-control {
-    border-radius: 8px;
-}
-
-/* Form container styling */
 .container {
     max-width: 700px;
     padding: 20px;
@@ -34,62 +19,4 @@ h1 {
     margin-top: 50px;
 }
 
-/* Alerts */
-.alert {
-    font-weight: bold;
-}
 
-/* Modal Background */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 255, 0.8); /* Blue background */
-    padding-top: 60px;
-}
-
-/* Modal Content */
-.modal-content {
-    background-color: #ffffff;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    max-width: 700px;
-    margin: 10% auto;
-}
-
-/* Title and Content Text */
-.modal-content h2 {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #007bff;
-    margin-bottom: 20px;
-    text-align: center;  /* Center the title */
-}
-
-.modal-content p {
-    font-size: 16px;
-    line-height: 1.6;
-    color: #333;
-    margin-bottom: 15px;
-    text-align: left;  /* Align text to the left for readability */
-}
-
-/* Close Button */
-.close {
-    font-size: 30px;
-    color: #007bff;
-    cursor: pointer;
-    position: absolute;
-    top: 10px;
-    right: 25px;
-    transition: color 0.3s ease;
-}
-
-.close:hover {
-    color: #0056b3;
-}
